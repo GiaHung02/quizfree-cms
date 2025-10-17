@@ -1,10 +1,15 @@
 'use client';
 import React from 'react';
-import Header from '@/components/header/header';
+import Navbar from '@/components/navbar';
+import Dashboard from '@/components/dashboard';
+import styles from './page.module.scss';
 export default function UI() {
-    return(
+    return (
         <>
-            <Header/>
+            <div className={styles.wrapper}>
+                <Navbar />
+                <Dashboard />
+            </div>
         </>
     );
 }

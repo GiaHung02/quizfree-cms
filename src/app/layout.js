@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google';
+import '@/styles/all.scss';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -7,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Nextcent",
+  title: "quizfree",
   description: "",
   icons: {
     icon: '/images/favicon.ico'
