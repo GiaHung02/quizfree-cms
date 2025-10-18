@@ -1,7 +1,28 @@
 import styles from './styles.module.scss';
 import Link from 'next/link';
+import clsx from 'clsx';
+import Image from 'next/image';
+import { useState } from 'react';
 
 export default function Index(params) {
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const menu = [
+        {
+            title: 'Quiz',
+            links: [
+                { name: 'List Quiz', href: '/' },
+                { name: 'Create New Quiz', href: '/' },
+            ],
+        },
+        {
+            title: 'Question',
+            links: [
+                { name: 'List Question', href: '/' },
+                { name: 'Create New Question', href: '/' },
+            ],
+        },
+    ];
     return (
         <>
             <aside className={styles.sidebar}>
@@ -10,15 +31,32 @@ export default function Index(params) {
                 </div>
                 <div className={styles.sidebarContent} style={{ overflowY: 'scroll' }}>
                     <ul className={styles.sideList}>
-                        <li className={styles.sideItem}>
-                            <Link href="/">Home</Link>
-                        </li>
-                        <li className={styles.sideItem}>
-                            <Link href="/">Home</Link>
-                        </li>
-                        <li className={styles.sideItem}>
-                            <Link href="/">Home</Link>
-                        </li>
+                        {menu.map((item, index) => (
+                            <li
+                                key={index}
+                                className={clsx(styles.sideItem, openIndex === index && styles.active)}
+                                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                            >
+                                <Link href="/">
+                                    <Image
+                                        src="/svg/arrow-left-angle.svg"
+                                        alt="arrow"
+                                        width={16}
+                                        height={16}
+                                        className={styles.arrowIcon}
+                                    />
+                                    {item.title}
+                                </Link>
+
+                                <ul className={styles.subList}>
+                                    {item.links.map((sub, index) => (
+                                        <li key={index}>
+                                            <Link href={sub.href}>{sub.name}</Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </aside>
