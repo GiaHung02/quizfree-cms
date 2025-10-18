@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import '@/styles/all.scss';
-
+import Navbar from '@/components/navbar';
+import styles from './page.module.scss';
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -19,7 +20,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.className}>
       <body>
-        {children}
+        <div className={styles.wrapper}>
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+'use client';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -11,7 +12,7 @@ export default function Index(params) {
         {
             title: 'Quiz',
             links: [
-                { name: 'List Quiz', href: '/' },
+                { name: 'List Quiz', href: '/quiz' },
                 { name: 'Create New Quiz', href: '/' },
             ],
         },
@@ -37,7 +38,7 @@ export default function Index(params) {
                                 className={clsx(styles.sideItem, openIndex === index && styles.active)}
                                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                             >
-                                <Link href="/">
+                                <Link href="#">
                                     <Image
                                         src="/svg/arrow-left-angle.svg"
                                         alt="arrow"

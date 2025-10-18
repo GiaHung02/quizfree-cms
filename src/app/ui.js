@@ -6,10 +6,7 @@ import styles from './page.module.scss';
 export default function UI() {
     return (
         <>
-            <div className={styles.wrapper}>
-                <Navbar />
-                <Dashboard />
-            </div>
+            <Dashboard />
         </>
     );
 }
