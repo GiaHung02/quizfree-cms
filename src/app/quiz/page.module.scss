@@ -1,0 +1,31 @@
+@use "@/styles/utils" as *;
+@use "@/styles/modules" as *;
+
+
+.quizContainer {
+
+    h1{
+        text-align: center;
+    }
+
+    .quizList {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        
+        .quizItem {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: all 0.3s;
+            
+            &:hover {
+                background-color: var(--color-primary);
+                color: var(--color-white);
+                
+            }
+        }
+    }
+
+}
