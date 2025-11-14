@@ -1,45 +1,51 @@
+'use client';
+import { useEffect, useState } from 'react';
 import styles from './page.module.scss';
+import { getAllQuizzes } from '@/services/quizService';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { quizList } from '@/data/fakeData.js';
 
 export default function QuizPage() {
-    const quizList = [
-        {
-            id: 1,
-            title: 'Quiz 1',
-            description: 'Quiz 1 description',
-            questions: 12,
-            time: 120,
-        },
-        {
-            id: 2,
-            title: 'Quiz 2',
-            description: 'Quiz 2 description',
-            questions: 12,
-            time: 120,
-        },
-    ];
+    const router = useRouter();
+    const [quizList, setQuizList] = useState([]);
+    const getQuizList = async () => {
+        const data = await getAllQuizzes();
+        console.log(data);
+        setQuizList(data.data);
+    };
+
+    useEffect(() => {
+        getQuizList();
+    }, []);
+
     return (
         <>
             <div className='dashboard'>
-                <div className={styles.quizContainer}>
-                    <h1>Quiz Page</h1>
-
-                    <div className={styles.quizList}>
-                        {quizList.map((quiz) => (
-                            <div className={styles.quizItem} key={quiz.id}>
-                                <h2>{quiz.title}</h2>
-                                <p>{quiz.description}</p>
-                                <div>
-                                    <div>{quiz.questions} questions</div>
-                                    <div>{quiz.time} minutes</div>
+                <h1 className="title">Quiz Page</h1>
+                {quizList.length > 0 ? (
+                    <div className={styles.quizContainer}>
+                        <div className={styles.quizList}>
+                            {quizList.map((quiz) => (
+                                <div className={styles.quizItem} key={quiz.id}>
+                                    <div className={styles.quizContent} onClick={() => router.push(`/quiz/${quiz.id}`)}>
+                                        <h2>{quiz.title}</h2>
+                                        <p>{quiz.description}</p>
+                                        <div>{quiz.questionCount} questions</div>
+                                    </div>
+                                    <div className={styles.buttonContainer}>
+                                        <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Edit'>Edit</Link>
+                                        <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Delete'>Delete</Link>
+                                    </div>
                                 </div>
-                                <div className={styles.buttonContainer}>
-                                    <button className={styles.button}>Edit</button>
-                                    <button className={styles.button}>Delete</button>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className={styles.noQuiz}>
+                        <h2>No quiz found</h2>
+                    </div>
+                )}
             </div>
         </>
     );
