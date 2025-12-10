@@ -28,14 +28,14 @@ export default function QuizPage() {
                         <div className={styles.quizList}>
                             {quizList.map((quiz) => (
                                 <div className={styles.quizItem} key={quiz.id}>
-                                    <div className={styles.quizContent} onClick={() => router.push(`/quiz/${quiz.id}`)}>
+                                    <div className={styles.quizContent} onClick={() => router.push(`/quiz/${quiz.slug}`)}>
                                         <h2>{quiz.title}</h2>
                                         <p>{quiz.description}</p>
                                         <div>{quiz.questionCount} questions</div>
                                     </div>
                                     <div className={styles.buttonContainer}>
-                                        <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Edit'>Edit</Link>
-                                        <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Delete'>Delete</Link>
+                                        <Link href={`/quiz/${quiz.slug}`} className={styles.button} title='Edit'>Edit</Link>
+                                        {/* <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Delete'>Delete</Link> */}
                                     </div>
                                 </div>
                             ))}

@@ -1,3 +1,6 @@
+@use "@/styles/utils" as *;
+@use "@/styles/modules" as *;
+
 .title {
     font-size: 24px;
     font-weight: 600;
@@ -6,7 +9,54 @@
     margin-bottom: 20px;
 }
 
+
+.ctaContainer {
+    position: fixed;
+    bottom: 0;
+    // border: 10px solid red;
+    background-color: var(--color-sidebar);
+    padding: 10px;
+
+
+    .ctaSave {
+        background-color: var(--color-primary);
+        border: none;
+        min-width: 200px;
+        padding: 12px;
+        font-weight: bold;
+        color: white;
+        transition: all 0.3s;
+
+        &:hover {
+            background-color: var(--color-light-purple);
+        }
+    }
+   
+}
+
+
 .formContainer {
+
+    padding-bottom: toRem(100);
+
+    details {
+        padding: 10px;
+        border-radius: 5px;
+
+        margin-bottom: 20px;
+
+        &[open] {
+            summary {
+                margin-bottom: 10px;
+            }
+        }
+
+        summary {
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    }
 
 
     .formGroup {
@@ -22,6 +72,15 @@
             border: 1px solid black;
             border-radius: 5px;
             width: 100%;
+        }
+
+
+        // dropdown
+        select {
+            // appearance: none;
+            padding: toRem(12) toRem(20);
+            font-size: toRem(20);
+            min-width: toRem(200);
         }
     }
 
