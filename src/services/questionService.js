@@ -25,7 +25,6 @@ export async function createQuestion(questionData) {
 }
 
 export async function updateQuestion(id, questionData) {
-    console.log("id:", id);
     console.log("Updating question with data:", questionData);
     const res = await fetch(`${API_URL}/question/${id}`, {
         method: 'PUT',
@@ -39,7 +38,7 @@ export async function updateQuestion(id, questionData) {
 }
 
 export async function deleteQuestion(id) {
-    const res = await fetch(`${API_URL}/questions/${id}`, {
+    const res = await fetch(`${API_URL}/question/${id}`, {
         method: 'DELETE',
     });
     if (!res.ok) throw new Error('Failed to delete question');

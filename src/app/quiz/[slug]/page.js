@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import styles from './page.module.scss';
 import { getQuizBySlug, updateQuiz } from '@/services/quizService';
 import { questionList } from '@/data/fakeData.js';
-import { createQuestion, updateQuestion } from '@/services/questionService';
+import { createQuestion, updateQuestion, deleteQuestion } from '@/services/questionService';
 
 export default function QuizDetail() {
     const { slug } = useParams();
@@ -50,23 +50,15 @@ export default function QuizDetail() {
     };
 
 
+    const fetchQuiz = async () => {
+        const data = await getQuizBySlug(slug);
+
+        if (data && data.data) {
+            setQuizData(data.data);
+        }
+    };
+
     useEffect(() => {
-        const fetchQuiz = async () => {
-            const data = await getQuizBySlug(slug);
-
-            if (data && data.data) {
-                const questionList = data.data.questions;
-                // questionList.forEach((question, index) => {
-                //     const content = question.content;
-                //     setQuestions(prev => ([
-                //         ...prev,
-                //         content
-                //     ]));
-                // })
-
-                setQuizData(data.data);
-            }
-        };
         if (slug) fetchQuiz();
 
     }, []);
@@ -148,8 +140,10 @@ export default function QuizDetail() {
         }))
     };
 
-    const deleteQuestion = (questionId) => {
-        console.log(questionId);
+    const onDelete = async (questionId) => {
+        await deleteQuestion(questionId);
+        await fetchQuiz(); 
+
     }
 
     return (
@@ -227,7 +221,7 @@ export default function QuizDetail() {
                                 </div>
 
                                 <div>
-                                    <button className={styles.ctaDeleteQuestion}type="button" onClick={() => deleteQuestion(quizData.questions[index].id)}>
+                                    <button className={styles.ctaDeleteQuestion}type="button" onClick={() => onDelete(quizData.questions[index].id)}>
                                         Delete Question
                                     </button>
                                 </div>
