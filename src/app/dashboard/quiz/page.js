@@ -42,7 +42,7 @@ export default function QuizPage() {
                                         <div>{quiz.questionCount} questions</div>
                                     </div>
                                     <div className={styles.buttonContainer}>
-                                        <Link href={`/quiz/${quiz.slug}`} className={styles.button} title='Edit'>Edit</Link>
+                                        <Link href={`/dashboard/quiz/${quiz.slug}`} className={styles.button} title='Edit'>Edit</Link>
                                         {/* <Link href={`/quiz/${quiz.id}`} className={styles.button} title='Delete'>Delete</Link> */}
                                     </div>
                                 </div>
