@@ -28,11 +28,15 @@ export default function QuizPage() {
         try {
             const res = await login(emailOrUsername, password);
 
+            console.log("res: ", res);
+            
+
             if (!res.success) {
                 setLoading(false);
                 setError(res.message || "Login failed");
                 return;
             }
+
             router.push('/dashboard');
         } catch (err) {
             setLoading(false);

@@ -5,6 +5,6 @@ import styles from "./styles.module.scss";
 
 export default function index() {
     return (
-        <div class={styles.loader}></div>
+        <div className={styles.loader}></div>
     );
 }
