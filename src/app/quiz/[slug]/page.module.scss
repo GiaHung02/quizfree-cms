@@ -85,3 +85,29 @@
     }
 
 }
+
+.ctaAddQuestion {
+    background-color: var(--color-primary);
+    border: none;
+    padding: toRem(12) toRem(20);
+    font-size: toRem(16);
+    color: #fff;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: var(--color-light-purple);
+    }
+}
+
+.ctaDeleteQuestion {
+    background-color: var(--color-red);
+    border: none;
+    padding: toRem(12) toRem(20);
+    font-size: toRem(16);
+    color: #fff;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: var(--color-dark-red);
+    }
+}

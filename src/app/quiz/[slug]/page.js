@@ -71,11 +71,6 @@ export default function QuizDetail() {
 
     }, []);
 
-    const submitQuiz = async (quizData) => {
-        const res = await updateQuiz(quizData.id, quizData);
-        console.log("Submitted quiz data:", quizData);
-    }
-
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -110,7 +105,7 @@ export default function QuizDetail() {
                     type: question.type,
                     order: question.order,
                     content: {
-                       ...question.content
+                        ...question.content
                     }
                 }
 
@@ -119,7 +114,7 @@ export default function QuizDetail() {
                 } else {
                     console.log("create new question: ", questionSubmitContent);
                     await createQuestion(questionSubmitContent);
-                    
+
                 }
             }
             alert("create new question successfully!");
@@ -152,6 +147,10 @@ export default function QuizDetail() {
             ]
         }))
     };
+
+    const deleteQuestion = (questionId) => {
+        console.log(questionId);
+    }
 
     return (
         <div className="dashboard">
@@ -226,12 +225,18 @@ export default function QuizDetail() {
                                         </select>
                                     </div>
                                 </div>
+
+                                <div>
+                                    <button className={styles.ctaDeleteQuestion}type="button" onClick={() => deleteQuestion(quizData.questions[index].id)}>
+                                        Delete Question
+                                    </button>
+                                </div>
                             </details>
                         </React.Fragment>
                     ))}
 
                     <div className={styles.addQuestionContainer}>
-                        <button className={styles.ctaAdd} type="button" onClick={addNewQuestion}>
+                        <button className={styles.ctaAddQuestion} type="button" onClick={addNewQuestion}>
                             + Add Question
                         </button>
                     </div>
