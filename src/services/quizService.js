@@ -7,6 +7,27 @@ export async function getAllQuizzes() {
     return res.json();
 }
 
+export async function createQuiz(quizData) {
+    console.log("quizData: ", quizData);
+    
+    const res = await fetch(`${API_URL}/quiz`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quizData),
+    });
+    if(!res.ok) throw new Error('Failed to create quiz');
+    return res.json();
+}
+
+// GET QUIZ BY ID
+export async function getQuizById(id) {
+    const res = await fetch(`${API_URL}/quiz/${id}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch quiz');
+    return res.json();
+}
+
 // GET QUIZ BY SLUG
 export async function getQuizBySlug(slug) {
     const res = await fetch(`${API_URL}/quiz/${slug}`, { cache: 'no-store' });

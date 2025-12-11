@@ -2,24 +2,32 @@
 import React, { useState, useEffect, use } from 'react';
 import { useParams } from 'next/navigation';
 import styles from './page.module.scss';
-import { getQuizBySlug, updateQuiz } from '@/services/quizService';
-import { questionList } from '@/data/fakeData.js';
+import { getQuizBySlug, updateQuiz, createQuiz } from '@/services/quizService';
 import { createQuestion, updateQuestion, deleteQuestion } from '@/services/questionService';
+import Button from '@/components/button';
+import { useRouter } from 'next/navigation';
+
 
 export default function QuizDetail() {
+    const router = useRouter();
     const { slug } = useParams();
-    const [quizData, setQuizData] = useState();
+    const [quizData, setQuizData] = useState({
+        title: '',
+        slug: '',
+        description: '',
+        questions: []
+    });
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState();
 
-    useEffect(() => {
-        if (questions) {
-            console.log("questions:", questions);
-        }
-        if (quizData) {
-            console.log("quizData:", quizData);
-        }
-    }, [quizData, questions]);
+    // useEffect(() => {
+    //     if (questions) {
+    //         console.log("questions:", questions);
+    //     }
+    //     if (quizData) {
+    //         console.log("quizData:", quizData);
+    //     }
+    // }, [quizData, questions]);
 
     const handleQuestionChange = (e, qIndex, field) => {
         const newValue = e.target.value;
@@ -52,6 +60,8 @@ export default function QuizDetail() {
 
     const fetchQuiz = async () => {
         const data = await getQuizBySlug(slug);
+        console.log("data: ", data);
+
 
         if (data && data.data) {
             setQuizData(data.data);
@@ -59,62 +69,65 @@ export default function QuizDetail() {
     };
 
     useEffect(() => {
-        if (slug) fetchQuiz();
+        if (!slug) return;
 
-    }, []);
+        if (slug !== "create") {
+            fetchQuiz();
+        }
+    }, [slug]);
+
 
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
         if (!quizData) return;
-        console.log("Submitting quizData:", quizData);
-        // 1️⃣ Ghép content của questions vào quizData trước
-        // const finalQuestions = quizData.questions.map((question, index) => (
-        //     {
-        //     ...question,
-        //     content: question// lấy content mới
-        // }));
 
-        // console.log("Final questions to submit:", finalQuestions);
-
-        try {
-            // 2️⃣ Update quiz trước
-            const quizSubmitContent = {
-                title: quizData.title,
-                description: quizData.description
-            };
+        if (quizData.id) {
+            try {
+                // 2️⃣ Update quiz trước
+                const quizSubmitContent = {
+                    title: quizData.title,
+                    description: quizData.description
+                };
 
 
-            await updateQuiz(quizData.id, quizSubmitContent);
+                await updateQuiz(quizData.id, quizSubmitContent);
 
-            for (const question of quizData.questions) {
-                console.log("question: ", question);
+                for (const question of quizData.questions) {
+                    const questionSubmitContent = {
+                        quiz_id: question.quiz_id,
+                        type: question.type,
+                        order: question.order,
+                        content: {
+                            ...question.content
+                        }
+                    }
 
-
-                const questionSubmitContent = {
-                    quiz_id: question.quiz_id,
-                    type: question.type,
-                    order: question.order,
-                    content: {
-                        ...question.content
+                    if (question.id) {
+                        await updateQuestion(question.id, questionSubmitContent);
+                    } else {
+                        await createQuestion(questionSubmitContent);
                     }
                 }
+                alert("create new question successfully!");
+                await fetchQuiz();
 
-                if (question.id) {
-                    await updateQuestion(question.id, questionSubmitContent);
-                } else {
-                    console.log("create new question: ", questionSubmitContent);
-                    await createQuestion(questionSubmitContent);
 
-                }
+            } catch (err) {
+                alert("Có lỗi khi update quiz");
             }
-            alert("create new question successfully!");
-
-
-        } catch (err) {
-            console.error("Error updating quiz:", err);
-            alert("Có lỗi khi update quiz");
+        } else {
+            try {
+                await createQuiz({
+                    title: quizData.title,
+                    slug: quizData.slug,
+                    description: quizData.description
+                });
+                router.push('/quiz');
+            } catch (err) {
+                alert("Có lỗi khi update quiz");
+            }
         }
     };
 
@@ -142,35 +155,31 @@ export default function QuizDetail() {
 
     const onDelete = async (questionId) => {
         await deleteQuestion(questionId);
-        await fetchQuiz(); 
+        await fetchQuiz();
 
     }
 
     return (
         <div className="dashboard">
-            <h1 className="title">{quizData?.title}</h1>
+            <h1 className="title">{quizData?.title ?? ""}</h1>
 
             <div className={styles.formContainer}>
                 <form>
-                    {
-                        quizData && (
-                            <div className={styles.formGroupContainer}>
-                                {/* question */}
-                                <div className={styles.formGroup}>
-                                    <label>Title</label>
-                                    <input className={styles.input} type="text" value={quizData.title} onChange={(e) => handleQuizChange(e, "title")} />
-                                </div>
-                                <div className={styles.formGroup}>
-                                    <label>Slug</label>
-                                    <input className={styles.input} type="text" value={quizData.slug} onChange={(e) => handleQuizChange(e, "slug")} />
-                                </div>
-                                <div className={styles.formGroup}>
-                                    <label>description</label>
-                                    <input className={styles.input} type="text" value={quizData.description} onChange={(e) => handleQuizChange(e, "description")} />
-                                </div>
-                            </div>
-                        )
-                    }
+                    <div className={styles.formGroupContainer}>
+                        {/* question */}
+                        <div className={styles.formGroup}>
+                            <label>Title</label>
+                            <input className={styles.input} type="text" value={quizData.title} onChange={(e) => handleQuizChange(e, "title")} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label>Slug</label>
+                            <input className={styles.input} type="text" value={quizData.slug} onChange={(e) => handleQuizChange(e, "slug")} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <label>description</label>
+                            <input className={styles.input} type="text" value={quizData.description} onChange={(e) => handleQuizChange(e, "description")} />
+                        </div>
+                    </div>
 
                     {quizData && quizData.questions.map((question, index) => (
                         <React.Fragment key={index}>
@@ -220,20 +229,29 @@ export default function QuizDetail() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <button className={styles.ctaDeleteQuestion}type="button" onClick={() => onDelete(quizData.questions[index].id)}>
-                                        Delete Question
-                                    </button>
-                                </div>
+                                {
+                                    quizData.questions[index].id && (
+                                        <>
+                                            <div>
+                                                <Button classname={styles.ctaDeleteQuestion} type={'button'} mode={'delete'} onClick={() => onDelete(quizData.questions[index].id)}>
+                                                    Delete Question
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )
+                                }
                             </details>
                         </React.Fragment>
                     ))}
 
-                    <div className={styles.addQuestionContainer}>
-                        <button className={styles.ctaAddQuestion} type="button" onClick={addNewQuestion}>
-                            + Add Question
-                        </button>
-                    </div>
+                    {
+                        slug !== "create" &&
+                        <div className={styles.addQuestionContainer}>
+                            <Button classname={styles.ctaAddQuestion} type="button" mode={'add'} onClick={() => addNewQuestion()}>
+                                + Add Question
+                            </Button>
+                        </div>
+                    }
                 </form>
             </div>
 

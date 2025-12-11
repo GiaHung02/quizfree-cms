@@ -5,6 +5,7 @@ import { getAllQuizzes } from '@/services/quizService';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { quizList } from '@/data/fakeData.js';
+import Button from '@/components/button';
 
 export default function QuizPage() {
     const router = useRouter();
@@ -19,10 +20,17 @@ export default function QuizPage() {
         getQuizList();
     }, []);
 
+    const AddNewQuiz = () => {
+        router.push('/quiz/create');
+    }
+
     return (
         <>
             <div className='dashboard'>
                 <h1 className="title">Quiz Page</h1>
+                <div className={styles.buttonWrapper}>
+                    <Button onClick={() => AddNewQuiz()} type={'button'} mode={'add'}>Add New Quiz</Button>
+                </div>
                 {quizList.length > 0 ? (
                     <div className={styles.quizContainer}>
                         <div className={styles.quizList}>
