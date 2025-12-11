@@ -13,14 +13,6 @@ export default function Index(params) {
             title: 'Quiz',
             links: [
                 { name: 'List Quiz', href: '/quiz' },
-                { name: 'Create New Quiz', href: '/' },
-            ],
-        },
-        {
-            title: 'Question',
-            links: [
-                { name: 'List Question', href: '/' },
-                { name: 'Create New Question', href: '/' },
             ],
         },
     ];

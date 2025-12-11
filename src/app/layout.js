@@ -21,7 +21,6 @@ export default function RootLayout({ children }) {
     <html lang="en" className={inter.className}>
       <body>
         <div className={styles.wrapper}>
-          <Navbar />
           {children}
         </div>
       </body>
