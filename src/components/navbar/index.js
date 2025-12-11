@@ -12,7 +12,7 @@ export default function Index(params) {
         {
             title: 'Quiz',
             links: [
-                { name: 'List Quiz', href: '/quiz' },
+                { name: 'List Quiz', href: '/dashboard/quiz' },
             ],
         },
     ];

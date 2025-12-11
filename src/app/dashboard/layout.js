@@ -18,13 +18,9 @@ export const metadata = {
 
 export default function DashboardLayout({ children }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>
-        <div className={styles.wrapper}>
-          <Navbar />
-          {children}
-        </div>
-      </body>
-    </html>
+    <div className={styles.wrapper}>
+      <Navbar />
+      {children}
+    </div>
   );
 }
